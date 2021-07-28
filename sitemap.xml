@@ -1,0 +1,20 @@
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    ><url>
+            <loc>/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/categories/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/tags/centos/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/categories/centos/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/posts/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/2021/07/scrapy%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/tags/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/2021/07/%E6%90%AD%E5%BB%BAftp%E7%AB%99%E7%82%B9centos-8/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/categories/documentation/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/2021/07/%E9%83%A8%E7%BD%B2%E5%B9%B6%E4%BD%BF%E7%94%A8dockercentos-8/</loc><lastmod>2021-07-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>/categories/django/</loc><lastmod>2021-05-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>/tags/python/</loc><lastmod>2021-05-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>/2021/05/python%E5%9D%91/</loc><lastmod>2021-05-27T03:44:18&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>/about/</loc><lastmod>2019-08-02T11:04:49&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>/series/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url></urlset>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>部署LNMP环境（CentOS 8） - Beno的博客</title><meta name="Description" content="关于 LoveIt 主题"><meta property="og:title" content="部署LNMP环境（CentOS 8）" />
+<meta property="og:description" content="部署LNMP环境（CentOS 8） 本页目录 [前提条件] [背景信息] [步骤一：准备编译环境] [步骤二：安装Nginx] [步骤三：安装MySQL" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" /><meta property="og:image" content="/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-27T03:44:18&#43;08:00" />
+<meta property="article:modified_time" content="2021-07-27T03:44:18&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/logo.png"/>
+
+<meta name="twitter:title" content="部署LNMP环境（CentOS 8）"/>
+<meta name="twitter:description" content="部署LNMP环境（CentOS 8） 本页目录 [前提条件] [背景信息] [步骤一：准备编译环境] [步骤二：安装Nginx] [步骤三：安装MySQL"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" /><link rel="prev" href="/2021/07/%E9%83%A8%E7%BD%B2%E5%B9%B6%E4%BD%BF%E7%94%A8dockercentos-8/" /><link rel="next" href="/2021/07/%E6%90%AD%E5%BB%BAftp%E7%AB%99%E7%82%B9centos-8/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "部署LNMP环境（CentOS 8）",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/2021\/07\/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8\/"
+        },"genre": "posts","keywords": "CentOS","wordcount":  3251 ,
+        "url": "\/2021\/07\/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8\/","datePublished": "2021-07-27T03:44:18+08:00","dateModified": "2021-07-27T03:44:18+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "Beno"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Beno的博客">Beno</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/categories/documentation/"> 文档 </a><a class="menu-item" href="/https:/github.com/benoooo" title="GitHub"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Beno的博客">Beno</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/categories/documentation/" title="">文档</a><a class="menu-item" href="/https:/github.com/benoooo" title="GitHub"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">部署LNMP环境（CentOS 8）</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Beno</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/centos/"><i class="far fa-folder fa-fw"></i>CentOS</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-27">2021-07-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 3251 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 7 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#前提条件">前提条件</a></li>
+    <li><a href="#背景信息">背景信息</a></li>
+    <li><a href="#步骤一准备编译环境">步骤一：准备编译环境</a></li>
+    <li><a href="#步骤二安装nginx">步骤二：安装Nginx</a></li>
+    <li><a href="#步骤三安装mysql">步骤三：安装MySQL</a></li>
+    <li><a href="#步骤四安装php">步骤四：安装PHP</a></li>
+    <li><a href="#步骤五配置nginx">步骤五：配置Nginx</a></li>
+    <li><a href="#步骤六配置mysql">步骤六：配置MySQL</a></li>
+    <li><a href="#步骤七配置php">步骤七：配置PHP</a></li>
+    <li><a href="#步骤八测试访问lnmp平台">步骤八：测试访问LNMP平台</a></li>
+    <li><a href="#后续步骤">后续步骤</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="部署lnmp环境centos-8">部署LNMP环境（CentOS 8）</h1>
+<p><a href="javascript:void%280%29" rel="">本页目录</a></p>
+<ul>
+<li>[前提条件]</li>
+<li>[背景信息]</li>
+<li>[步骤一：准备编译环境]</li>
+<li>[步骤二：安装Nginx]</li>
+<li>[步骤三：安装MySQL]</li>
+<li>[步骤四：安装PHP]</li>
+<li>[步骤五：配置Nginx]</li>
+<li>[步骤六：配置MySQL]</li>
+<li>[步骤七：配置PHP]</li>
+<li>[步骤八：测试访问LNMP平台]</li>
+<li>[后续步骤]</li>
+</ul>
+<p>本教程介绍如何手动在ECS实例上搭建LNMP环境（CentOS 8），其中LNMP分别代表Linux、Nginx、MySQL和PHP。</p>
+<h2 id="前提条件">前提条件</h2>
+<ul>
+<li>已创建ECS服务器实例并为实例分配公网IP地址。</li>
+<li>已在实例安全组的入方向添加安全组规则并放行80端口。)。</li>
+</ul>
+<h2 id="背景信息">背景信息</h2>
+<p>CentOS 8版本的操作系统中默认安装了DNF软件包管理器，是YUM软件包管理器的下一代版本。您可以在CentOS 8系统中运行<strong>dnf</strong>命令获取相关的使用说明。</p>
+<p>本教程适用于熟悉Linux操作系统。</p>
+<p>操作系统及软件版本如下所示。当您使用不同软件版本时，可能需要根据实际情况调整命令和参数配置。</p>
+<ul>
+<li>操作系统：CentOS 8.1 64位</li>
+<li>Nginx版本：Nginx 1.16.1</li>
+<li>MySQL版本：MySQL 8.0.17</li>
+<li>PHP版本：PHP 7.3.5</li>
+</ul>
+<h2 id="步骤一准备编译环境">步骤一：准备编译环境</h2>
+<ol>
+<li>
+<p>远程连接Linux实例。</p>
+</li>
+<li>
+<p>关闭防火墙。</p>
+<ol>
+<li>
+<p>运行<strong>systemctl status firewalld</strong>命令查看当前防火墙的状态。</p>
+<p><a href="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p32172.png" target="_blank" rel="noopener noreffer"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p32172.png"
+        data-srcset="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p32172.png, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p32172.png 1.5x, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p32172.png 2x"
+        data-sizes="auto"
+        alt="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p32172.png"
+        title="查看防火墙状态" /></a></p>
+<ul>
+<li>如果防火墙的状态参数是inactive，则防火墙为关闭状态。</li>
+<li>如果防火墙的状态参数是active，则防火墙为开启状态。本示例中防火墙为开启状态，因此需要关闭防火墙。</li>
+</ul>
+</li>
+<li>
+<p>关闭防火墙。如果防火墙为关闭状态可以忽略此步骤。</p>
+<ul>
+<li>
+<p>如果您想临时关闭防火墙，运行命令</p>
+<p>systemctl stop firewalld</p>
+<p>。</p>
+<p><strong>说明</strong> 这只是暂时关闭防火墙，下次重启Linux后，防火墙还会开启。</p>
+</li>
+<li>
+<p>如果您想永久关闭防火墙，运行命令</p>
+<p>systemctl disable firewalld</p>
+<p>。</p>
+<p><strong>说明</strong> 如果您想重新开启防火墙，请参见<a href="https://firewalld.org/" target="_blank" rel="noopener noreffer">firewalld官网信息</a>。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>关闭SELinux。</p>
+<ol>
+<li>
+<p>运行<strong>getenforce</strong>命令查看SELinux的当前状态。</p>
+<p><a href="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p21065.png" target="_blank" rel="noopener noreffer"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p21065.png"
+        data-srcset="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p21065.png, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p21065.png 1.5x, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p21065.png 2x"
+        data-sizes="auto"
+        alt="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p21065.png"
+        title="查看SELinux状态" /></a></p>
+<ul>
+<li>如果SELinux状态参数是Disabled，则SELinux为关闭状态。</li>
+<li>如果SELinux状态参数是Enforcing，则SELinux为开启状态。本示例中SELinux为开启状态，因此需要关闭SELinux。</li>
+</ul>
+</li>
+<li>
+<p>关闭SELinux。如果SELinux为关闭状态可以忽略此步骤。</p>
+<ul>
+<li>
+<p>如果您想临时关闭SELinux，运行命令</p>
+<p>setenforce 0</p>
+<p>。</p>
+<p><strong>说明</strong> 这只是暂时关闭SELinux，下次重启Linux后，SELinux还会开启。</p>
+</li>
+<li>
+<p>如果您想永久关闭SELinux，运行命令</p>
+<p>vim /etc/selinux/config</p>
+<p>编辑SELinux配置文件。回车后，把光标移动到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">SELINUX=enforcing
+</code></pre></td></tr></table>
+</div>
+</div><p>这一行，按</p>
+<p>i</p>
+<p>键进入编辑模式，修改为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">SELINUX=disabled
+</code></pre></td></tr></table>
+</div>
+</div><p>，按</p>
+<p>Esc</p>
+<p>键，然后输入</p>
+<p>:wq</p>
+<p>并按</p>
+<p>Enter</p>
+<p>键以保存并关闭SELinux配置文件。</p>
+<p><strong>说明</strong> 如果您想重新开启SELinux，请参见<a href="https://help.aliyun.com/document_detail/157022.htm#task-2385075" target="_blank" rel="noopener noreffer">开启或关闭SELinux</a>。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>重启系统使设置生效。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="步骤二安装nginx">步骤二：安装Nginx</h2>
+<ol>
+<li>
+<p>运行以下命令安装Nginx。</p>
+<p>本教程将选用Nginx 1.16.1版本。</p>
+<p><strong>说明</strong> 您可以访问<a href="http://nginx.org/packages/centos/8/x86_64/RPMS/" target="_blank" rel="noopener noreffer">Nginx官方安装包</a>获取适用于CentOS 8系统的多版本的Nginx安装包。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dnf -y install http://nginx.org/packages/centos/8/x86_64/RPMS/nginx-1.16.1-1.el8.ngx.x86_64.rpm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令查看Nginx版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">nginx -v
+</code></pre></td></tr></table>
+</div>
+</div><p>查看版本结果如下所示。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">nginx version: nginx/1.16.1
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="步骤三安装mysql">步骤三：安装MySQL</h2>
+<ol>
+<li>
+<p>运行以下命令安装MySQL。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dnf -y install @mysql
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令查看MySQL版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -V
+</code></pre></td></tr></table>
+</div>
+</div><p>查看版本结果如下所示。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql  Ver 8.0.17 for Linux on x86_64 (Source distribution)
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="步骤四安装php">步骤四：安装PHP</h2>
+<ol>
+<li>
+<p>运行以下命令添加并更新epel源。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dnf -y install epel-release
+dnf update epel-release
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令删除缓存的无用软件包并更新软件源。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dnf clean all
+dnf makecache
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>启用<code>php:7.3</code>模块。</p>
+<p><strong>说明</strong> 本示例使用<code>php:7.3</code>版本。如果您需要使用<code>PHP 7.4</code>版本，需要先安装remi源。remi源安装命令为<strong>dnf -y install <a href="https://rpms.remirepo.net/enterprise/remi-release-8.rpm">https://rpms.remirepo.net/enterprise/remi-release-8.rpm</a></strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dnf module enable php:7.3
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令安装PHP相应的模块。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">dnf install php php-curl php-dom php-exif php-fileinfo php-fpm php-gd php-hash php-json php-mbstring php-mysqli php-openssl php-pcre php-xml libsodium
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令查看PHP版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">php -v
+</code></pre></td></tr></table>
+</div>
+</div><p>查看版本结果如下所示。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">PHP 7.3.5 (cli) (built: Apr 30 2019 08:37:17) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.3.5, Copyright (c) 1998-2018 Zend Technologies
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="步骤五配置nginx">步骤五：配置Nginx</h2>
+<ol>
+<li>
+<p>运行以下命令查看Nginx配置文件的默认路径。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat /etc/nginx/nginx.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>http</code>大括号内，查看<code>include</code>配置项。即配置文件的默认路径。<a href="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130116.png" target="_blank" rel="noopener noreffer"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130116.png"
+        data-srcset="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130116.png, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130116.png 1.5x, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130116.png 2x"
+        data-sizes="auto"
+        alt="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130116.png"
+        title="conf" /></a></p>
+</li>
+<li>
+<p>在配置文件的默认路径下，备份默认配置文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd /etc/nginx/conf.d
+cp default.conf default.conf.bak
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>修改默认配置文件。</p>
+<ol>
+<li>
+<p>运行以下命令打开默认配置文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vi default.conf
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>按i进入编辑模式。</p>
+</li>
+<li>
+<p>在<code>location</code>大括号内，修改以下内容。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">location / {
+    #将该路径替换为您的网站根目录。
+    root   /usr/share/nginx/html;
+    #添加默认首页信息index.php。
+    index  index.html index.htm index.php;
+}
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>去掉被注释的<code>location ~ \.php$</code>大括号内容前的<code>#</code>，并修改大括号的内容。</p>
+<p>修改完成如下所示。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">location ~ \.php$ {
+    #将该路径替换为您的网站根目录。
+    root           /usr/share/nginx/html;
+    #Nginx通过unix套接字与PHP-FPM建立联系，该配置与/etc/php-fpm.d/www.conf文件内的listen配置一致。
+    fastcgi_pass   unix:/run/php-fpm/www.sock;
+    fastcgi_index  index.php;
+    #将/scripts$fastcgi_script_name修改为$document_root$fastcgi_script_name。
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    #Nginx调用fastcgi接口处理PHP请求。
+    include        fastcgi_params;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>说明</strong> Nginx与PHP-FPM进程间通信方式有两种。</p>
+<ul>
+<li>TCP Socket：该方式能够通过网络，可用于跨服务器通信的场景。</li>
+<li>UNIX Domain Socket：该方式不能通过网络，只能用于同一服务器中通信的场景。</li>
+</ul>
+</li>
+<li>
+<p>按下Esc键，并输入<code>:wq</code>保存退出文件。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>运行以下命令启动Nginx服务。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl start nginx
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令设置Nginx服务开机自启动。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable nginx
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="步骤六配置mysql">步骤六：配置MySQL</h2>
+<ol>
+<li>
+<p>运行以下命令启动MySQL，并设置为开机自启动。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable --now mysqld
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令查看MySQL是否已启动。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl status mysqld
+</code></pre></td></tr></table>
+</div>
+</div><p>查看返回结果中<code>Active: active (running)</code>表示已启动。</p>
+</li>
+<li>
+<p>运行以下命令执行MySQL安全性操作并设置密码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql_secure_installation
+</code></pre></td></tr></table>
+</div>
+</div><p>命令运行后，根据命令行提示执行如下操作。</p>
+<ol>
+<li>
+<p>输入Y并回车开始相关配置。</p>
+</li>
+<li>
+<p>选择密码验证策略强度，输入</p>
+<p>2</p>
+<p>并回车。</p>
+<p>策略0表示低，1表示中，2表示高。建议您选择高强度的密码验证策略。</p>
+</li>
+<li>
+<p>设置MySQL的新密码并确认。</p>
+<p>本示例设置密码<code>PASSword123！</code>。</p>
+</li>
+<li>
+<p>输入Y并回车继续使用提供的密码。</p>
+</li>
+<li>
+<p>输入Y并回车移除匿名用户。</p>
+</li>
+<li>
+<p>设置是否允许远程连接MySQL。</p>
+<ul>
+<li>不需要远程连接时，输入Y并回车。</li>
+<li>需要远程连接时，输入N或其他任意非Y的按键，并回车。</li>
+</ul>
+</li>
+<li>
+<p>输入Y并回车删除<code>test</code>库以及对<code>test</code>库的访问权限。</p>
+</li>
+<li>
+<p>输入Y并回车重新加载授权表。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="步骤七配置php">步骤七：配置PHP</h2>
+<ol>
+<li>
+<p>修改PHP配置文件。</p>
+<ol>
+<li>
+<p>运行以下命令打开配置文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vi /etc/php-fpm.d/www.conf
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>按i进入编辑模式。</p>
+</li>
+<li>
+<p>找到<code>user = apache</code>和<code>group = apache</code>，将<code>apache</code>修改为<code>nginx</code>。</p>
+<p><a href="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130166.png" target="_blank" rel="noopener noreffer"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130166.png"
+        data-srcset="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130166.png, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130166.png 1.5x, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130166.png 2x"
+        data-sizes="auto"
+        alt="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130166.png"
+        title="php-fpm conf" /></a></p>
+</li>
+<li>
+<p>按下Esc键，并输入<code>:wq</code>保存退出文件。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>新建phpinfo.php文件，用于展示PHP信息。</p>
+<ol>
+<li>
+<p>运行以下命令新建文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vim &lt;网站根目录&gt;/phpinfo.php  #将&lt;网站根目录&gt;替换为您配置的网站根目录。
+</code></pre></td></tr></table>
+</div>
+</div><p>网站根目录是您在nginx.conf文件中<code>location ~ .php$</code>大括号内配置的<code>root</code>值，如下图所示。</p>
+<p><a href="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p69633.png" target="_blank" rel="noopener noreffer"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p69633.png"
+        data-srcset="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p69633.png, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p69633.png 1.5x, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p69633.png 2x"
+        data-sizes="auto"
+        alt="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p69633.png"
+        title="lnmp-root-dir" /></a></p>
+<p>本教程配置的网站根目录为/usr/share/nginx/html，因此命令为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vim /usr/share/nginx/html/phpinfo.php
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>按i进入编辑模式。</p>
+</li>
+<li>
+<p>输入下列内容，函数<code>phpinfo()</code>会展示PHP的所有配置信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php echo phpinfo(); ?&gt;
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>按Esc键后，输入:wq并回车以保存并关闭配置文件。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>运行以下命令启动<code>PHP-FPM</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl start php-fpm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行以下命令设置<code>PHP-FPM</code>开机自启动。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable php-fpm
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="步骤八测试访问lnmp平台">步骤八：测试访问LNMP平台</h2>
+<ol>
+<li>
+<p>在本地物理机打开浏览器。</p>
+</li>
+<li>
+<p>在地址栏输入<code>http://&lt;ECS实例公网IP地址&gt;/phpinfo.php</code>。</p>
+<p>返回结果如下图所示，表示LNMP环境部署成功。<a href="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130169.png" target="_blank" rel="noopener noreffer"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130169.png"
+        data-srcset="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130169.png, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130169.png 1.5x, http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130169.png 2x"
+        data-sizes="auto"
+        alt="http://static-aliyun-doc.oss-cn-hangzhou.aliyuncs.com/assets/img/zh-CN/4458755951/p130169.png"
+        title="phpinfo" /></a></p>
+</li>
+</ol>
+<h2 id="后续步骤">后续步骤</h2>
+<p>测试访问LNMP平台成功后，建议您运行以下命令将phpinfo.php文件删除，消除安全隐患。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">rm -rf &lt;网站根目录&gt;/phpinfo.php   #将&lt;网站根目录&gt;替换为您在nginx.conf中配置的网站根目录
+</code></pre></td></tr></table>
+</div>
+</div><p>本教程配置的网站根目录为/usr/share/nginx/html，因此命令为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">rm -rf /usr/share/nginx/html/phpinfo.php
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-07-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）" data-hashtags="CentOS"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-hashtag="CentOS"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="/2021/07/%E9%83%A8%E7%BD%B2lnmp%E7%8E%AF%E5%A2%83centos-8/" data-title="部署LNMP环境（CentOS 8）"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/centos/">CentOS</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2021/07/%E9%83%A8%E7%BD%B2%E5%B9%B6%E4%BD%BF%E7%94%A8dockercentos-8/" class="prev" rel="prev" title="部署并使用Docker（CentOS 8）"><i class="fas fa-angle-left fa-fw"></i>部署并使用Docker（CentOS 8）</a>
+            <a href="/2021/07/%E6%90%AD%E5%BB%BAftp%E7%AB%99%E7%82%B9centos-8/" class="next" rel="next" title="搭建FTP站点（CentOS 8）">搭建FTP站点（CentOS 8）<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"> Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.82.1">Hugo</a> | Theme created by <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Beno</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":15,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
